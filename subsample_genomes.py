@@ -29,4 +29,3 @@ def sample_fasta_files(input_dir, output_dir, fragment_length, n_fragments):
                 f.write(str(fragment) + '\n')
 
         print(f"Successfully generated {len(fragments)} fragments, written to {output_file}")
-

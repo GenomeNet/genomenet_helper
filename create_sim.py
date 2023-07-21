@@ -55,4 +55,3 @@ def simulate_genome(num_file, sample_from, kmer_length, seed, output_dir, random
             f.write(sequence)
 
     print('Finished generating .FASTA files.')
-

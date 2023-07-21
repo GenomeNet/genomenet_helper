@@ -1,5 +1,5 @@
 import os
-import random 
+import random
 import argparse
 from subsample_genomes import sample_fasta_files
 from create_sim import calculate_frequencies, add_randomness
@@ -43,4 +43,3 @@ if __name__ == "__main__":
         if file.endswith('.fasta'):
             input_file = os.path.join(args.output_dir, file)
             create_simulated_fasta(input_file, args.output_dir, args.sequence_length, args.kmer_length, args.randomness, args.seed)
-
