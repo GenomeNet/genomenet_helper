@@ -16,11 +16,16 @@ def sample_fasta_files(input_dir, output_dir, fragment_length, n_fragments):
 
         combined_seq = "".join(str(record.seq) for record in SeqIO.parse(input_file, 'fasta'))
 
-        if len(combined_seq) < fragment_length * n_fragments:
-            print(f"File {file} combined sequence length is less than required for sampling. Skipping this file.")
+        # Calculate the maximum possible number of fragments for this file
+        max_fragments = len(combined_seq) // fragment_length
+        if max_fragments == 0:
+            print(f"File {file} combined sequence length is less than the fragment length. Skipping this file.")
             continue
 
-        start_indices = random.sample(range(len(combined_seq) - fragment_length + 1), min(n_fragments, len(combined_seq) - fragment_length + 1))
+        # Use the smaller of the user-specified number of fragments and the maximum possible number
+        n_fragments = min(n_fragments, max_fragments)
+
+        start_indices = random.sample(range(len(combined_seq) - fragment_length + 1), n_fragments)
         fragments = [combined_seq[i: i + fragment_length] for i in start_indices]
 
         with open(output_file, 'w') as f:
@@ -29,3 +34,4 @@ def sample_fasta_files(input_dir, output_dir, fragment_length, n_fragments):
                 f.write(str(fragment) + '\n')
 
         print(f"Successfully generated {len(fragments)} fragments, written to {output_file}")
+
