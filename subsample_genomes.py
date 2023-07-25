@@ -23,9 +23,9 @@ def sample_fasta_files(input_dir, output_dir, fragment_length, n_fragments):
             continue
 
         # Use the smaller of the user-specified number of fragments and the maximum possible number
-        n_fragments = min(n_fragments, max_fragments)
+        actual_fragments = min(n_fragments, max_fragments)
 
-        start_indices = random.sample(range(len(combined_seq) - fragment_length + 1), n_fragments)
+        start_indices = random.sample(range(len(combined_seq) - fragment_length + 1), actual_fragments)
         fragments = [combined_seq[i: i + fragment_length] for i in start_indices]
 
         with open(output_file, 'w') as f:
