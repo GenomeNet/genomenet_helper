@@ -1,5 +1,6 @@
 # simple_sequence_simulator
-A simple sequence simulator tool
+- Subsamples .fasta files in a folder
+- Additionally generated simulated data with 3mer profile of each .fasta file
 
 ## Usage
 
