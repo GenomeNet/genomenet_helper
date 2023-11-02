@@ -7,6 +7,7 @@ setup(
     install_requires=[
         'Bio',
         'numpy',
+        'b2sdk',
     ],
     entry_points={
         'console_scripts': [

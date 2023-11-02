@@ -34,10 +34,11 @@ def sample_fasta_files(input_file, output_dir, fragment_length, n_fragments):
 
 def subsample_genomes(input_dir, fragment_length=4000, n_fragments=2500):
     output_dir = generate_output_directory(input_dir, "subsampled")
-    
+
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
+    # Subsample each fasta file in the input directory.
     for fasta_file in os.listdir(input_dir):
         if fasta_file.endswith('.fasta'):
             input_file = os.path.join(input_dir, fasta_file)
