@@ -7,6 +7,23 @@ GenomeNet Helper is a tool designed to assist in the downloading and processing 
 - **Subsampling**: Generate subsamples from genome fasta files based on specified fragment length and number.
 - **Simulation**: Simulate genome sequences either from provided k-mer frequencies of a fasta file or using default nucleotide frequencies.
 
+## Installation
+
+Before installing the package, it's a good idea to set up a virtual environment to avoid potential conflicts with other Python packages.
+
+```
+virtualenv venv
+source venv/bin/activate
+```
+
+You'll need to clone the repository to your local machine. Navigate to the directory where you want the project to live and run the following command:
+
+```
+git clone https://github.com/GenomeNet/genomenet_helper.git
+cd genomenet_helper
+pip install .
+```
+
 ## Usage
 
 ### Subsampling
@@ -36,3 +53,17 @@ genomenet_helper simulate --input [input_dir] [--sim_size_kb 100] [--kmer_length
 - `kmer_length`: (Optional) Length of kmers to consider. Default is `3`.
 - `randomness`: (Optional) Amount of randomness to add to the kmer frequencies. Default is `0.0`.
 - `seed`: (Optional) Seed for random number generation.
+
+### Splitting
+
+To split genome files into train, validation, and test sets:
+
+```
+genomenet_helper split --input [input_dir] [--fractions 80,10,10] [--by_size False]
+```
+
+- `input_dir`:  Directory containing input fasta files.
+- `fractions`: (Optional) Percentages to split the data into train, validation, and test sets respectively. Default is 80,10,10.
+- `by_size`: (Optional) If set to True, the files will be split based on their size in bytes, ensuring that the output directories adhere closely to the specified fractions in terms of total size. If set to False, the files will be randomly split by count. Default is False.
+
+Output directories for train, validation, and test sets are generated automatically based on input directory name, in the format $inputname_train_date, $inputname_validation_date, and $inputname_test_date respectively.
