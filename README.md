@@ -13,6 +13,7 @@ GenomeNet Helper is a tool designed to assist in the downloading and processing 
 TODO:
 - add baseline classifiers (alignment based / k-mer based)
 - query from BacDive table
+- calculate genome quality scores
 
 ## Installation
 
