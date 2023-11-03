@@ -3,9 +3,12 @@
 GenomeNet Helper is a tool designed to assist in the downloading and processing of genome files for deep learning model training. The application provides functionalities to subsample and simulate genome sequences based on user input.
 
 ## Features
-
+- **Genome download**: Download genomes based on a list of genome IDS from NCBI, ENA and PATRIC
+- **Splitting**: Splitting the dataset up to train/test/validation by file size.
 - **Subsampling**: Generate subsamples from genome fasta files based on specified fragment length and number.
 - **Simulation**: Simulate genome sequences either from provided k-mer frequencies of a fasta file or using default nucleotide frequencies.
+- **Merging**: Merge the Subsampling/Simulation output to generate final train/test/validaion folders
+- **Uploading**: Upload to B2 
 
 ## Installation
 
