@@ -10,6 +10,8 @@ GenomeNet Helper is a tool designed to assist in the downloading and processing 
 - **Merging**: Merge the Subsampling/Simulation output to generate final train/test/validaion folders
 - **Uploading**: Upload to B2
 
+TODO: add baseline classifiers (alignment based / k-mer based)
+
 ## Installation
 
 Before installing the package, it's a good idea to set up a virtual environment to avoid potential conflicts with other Python packages.
