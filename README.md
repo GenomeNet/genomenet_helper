@@ -8,7 +8,7 @@ GenomeNet Helper is a tool designed to assist in the downloading and processing 
 - **Subsampling**: Generate subsamples from genome fasta files based on specified fragment length and number.
 - **Simulation**: Simulate genome sequences either from provided k-mer frequencies of a fasta file or using default nucleotide frequencies.
 - **Merging**: Merge the Subsampling/Simulation output to generate final train/test/validaion folders
-- **Uploading**: Upload to B2 
+- **Uploading**: Upload to B2
 
 ## Installation
 
