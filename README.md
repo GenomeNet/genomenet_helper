@@ -10,7 +10,9 @@ GenomeNet Helper is a tool designed to assist in the downloading and processing 
 - **Merging**: Merge the Subsampling/Simulation output to generate final train/test/validaion folders
 - **Uploading**: Upload to B2
 
-TODO: add baseline classifiers (alignment based / k-mer based)
+TODO:
+- add baseline classifiers (alignment based / k-mer based)
+- query from BacDive table
 
 ## Installation
 
