@@ -4,6 +4,8 @@ from .simulate import simulate_genomes
 from .split import split_files
 from .upload import upload_dataset
 from .merge import merge_datasets
+from .genome_downloader import reformat_and_download_genome_ids
+
 
 def main():
     parser = argparse.ArgumentParser(description='GenomeNet Helper')
@@ -44,6 +46,11 @@ def main():
     parser_merge.add_argument('--input', type=str, required=True, help='The base name for input directories.')
     parser_merge.add_argument('--date', type=str, required=True, help='The date suffix for the directories.')
 
+    # Add a new subparser for the genome_download command
+    parser_genome_download = subparsers.add_parser('genome_download')
+    parser_genome_download.add_argument('--input', type=str, required=True, help='Path to the file containing the list of genome IDs.')
+
+
     args = parser.parse_args()
     if args.command == 'subsample':
         for input_dir in args.input:
@@ -57,6 +64,8 @@ def main():
         upload_dataset(args.train, args.test, args.validation)
     elif args.command == 'merge':
         merge_datasets(args.input, args.date)
+    elif args.command == 'genome_download':
+        reformat_and_download_genome_ids(args.input)
     else:
         parser.print_help()
 
