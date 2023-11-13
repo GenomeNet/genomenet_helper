@@ -8,6 +8,8 @@ setup(
         'Bio',
         'numpy',
         'b2sdk',
+        'ncbi-genome-download',
+        'appdirs',
     ],
     entry_points={
         'console_scripts': [
