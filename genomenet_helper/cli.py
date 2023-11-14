@@ -5,6 +5,7 @@ from .split import split_files
 from .upload import upload_dataset
 from .merge import merge_datasets
 from .genome_downloader import reformat_and_download_genome_ids
+from .kmer_profiling import process_kmer_profiles
 
 
 def main():
@@ -50,6 +51,14 @@ def main():
     parser_genome_download = subparsers.add_parser('genome_download')
     parser_genome_download.add_argument('--input', type=str, required=True, help='Path to the file containing the list of genome IDs.')
 
+     # K-mer profiling command
+    parser_kmer = subparsers.add_parser('kmer')
+    parser_kmer.add_argument('--input', type=str, required=True, help='Input directory containing fasta files')
+    parser_kmer.add_argument('--kmer_size', type=int, default=7, help='Size of k-mers')
+    parser_kmer.add_argument('--max_subseqs', type=int, default=20, help='Maximum number of subsequences to process from each fasta file')
+    parser_kmer.add_argument('--subsequence_size', type=int, default=2000, help='Size of each subsequence to be processed')
+    parser_kmer.add_argument('--random_mode', action='store_true', help='Enable random mode to randomly select subsequences')
+    parser_kmer.add_argument('--label', type=str, default="", help='Label for the output data')
 
     args = parser.parse_args()
     if args.command == 'subsample':
@@ -64,6 +73,8 @@ def main():
         upload_dataset(args.train, args.test, args.validation)
     elif args.command == 'merge':
         merge_datasets(args.input, args.date)
+    elif args.command == 'kmer':
+        process_kmer_profiles(args.input, args.kmer_size, args.max_subseqs, args.subsequence_size, args.random_mode, args.label)
     elif args.command == 'genome_download':
         reformat_and_download_genome_ids(args.input)
     else:
