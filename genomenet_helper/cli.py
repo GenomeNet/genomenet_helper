@@ -6,6 +6,7 @@ from .upload import upload_dataset
 from .merge import merge_datasets
 from .genome_downloader import reformat_and_download_genome_ids
 from .kmer_profiling import process_kmer_profiles
+from .model_trainer import process_model_training
 
 
 def main():
@@ -60,6 +61,11 @@ def main():
     parser_kmer.add_argument('--random_mode', action='store_true', help='Enable random mode to randomly select subsequences')
     parser_kmer.add_argument('--label', type=str, default="", help='Label for the output data')
 
+    # Add a new subparser for the model training command
+    parser_model_train = subparsers.add_parser('train_model')
+    parser_model_train.add_argument('--input_train', type=str, nargs='+', required=True, help='CSV files for training')
+    parser_model_train.add_argument('--input_test', type=str, nargs='+', required=True, help='CSV files for testing')
+
     args = parser.parse_args()
     if args.command == 'subsample':
         for input_dir in args.input:
@@ -75,6 +81,8 @@ def main():
         merge_datasets(args.input, args.date)
     elif args.command == 'kmer':
         process_kmer_profiles(args.input, args.kmer_size, args.max_subseqs, args.subsequence_size, args.random_mode, args.label)
+    elif args.command == 'train_model':
+        process_model_training(args.input_train, args.input_test)
     elif args.command == 'genome_download':
         reformat_and_download_genome_ids(args.input)
     else:
