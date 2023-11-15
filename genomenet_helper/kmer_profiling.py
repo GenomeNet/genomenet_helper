@@ -5,8 +5,25 @@ import pandas as pd
 import tempfile
 import random
 import logging
+import pandas as pd
 
 logging.basicConfig(level=logging.INFO)
+
+def harmonize_kmer_headers(file1, file2):
+    # Load the CSV files
+    df1 = pd.read_csv(file1)
+    df2 = pd.read_csv(file2)
+
+    # Get the union of k-mer columns from both files
+    kmer_cols = sorted(set(df1.columns) | set(df2.columns))
+
+    # Rearrange and fill missing k-mers with 0s
+    df1 = df1.reindex(columns=['unique_id', 'file_name', 'sample_id', 'class'] + kmer_cols, fill_value=0)
+    df2 = df2.reindex(columns=['unique_id', 'file_name', 'sample_id', 'class'] + kmer_cols, fill_value=0)
+
+    # Save the harmonized files
+    df1.to_csv(file1.replace('.csv', '_harmonized.csv'), index=False)
+    df2.to_csv(file2.replace('.csv', '_harmonized.csv'), index=False)
 
 def process_fasta(fasta_path, max_subseqs=20, kmer_size=7, subsequence_size=2000, temp_dir="", random_mode=False):
     output_files = []
@@ -86,4 +103,6 @@ def process_kmer_profiles(input_dir, kmer_size, max_subseqs, subsequence_size, r
 
     if all_aggregated_data:
         combined_df = pd.concat(all_aggregated_data, ignore_index=True)
-        combined_df.to_csv(f"{os.path.basename(input_dir)}_all_aggregated_jellyfish_output.csv", index=False)
+        output_file_path = f"{os.path.basename(input_dir)}_all_aggregated_jellyfish_output.csv"
+        combined_df.to_csv(output_file_path, index=False)
+        logging.info(f"K-mer profiling completed. Output file saved as: {output_file_path}")

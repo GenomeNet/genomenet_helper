@@ -7,7 +7,7 @@ from .merge import merge_datasets
 from .genome_downloader import reformat_and_download_genome_ids
 from .kmer_profiling import process_kmer_profiles
 from .model_trainer import process_model_training
-
+from .kmer_harmonization import harmonize_kmer_headers
 
 def main():
     parser = argparse.ArgumentParser(description='GenomeNet Helper')
@@ -61,10 +61,15 @@ def main():
     parser_kmer.add_argument('--random_mode', action='store_true', help='Enable random mode to randomly select subsequences')
     parser_kmer.add_argument('--label', type=str, default="", help='Label for the output data')
 
+    # K-mer Harmonize command
+    parser_kmer_harmonize = subparsers.add_parser('kmer-harmonize')
+    parser_kmer_harmonize.add_argument('files', nargs='+', help='Paths to the CSV files to harmonize')
+
     # Add a new subparser for the model training command
     parser_model_train = subparsers.add_parser('train_model')
     parser_model_train.add_argument('--input_train', type=str, nargs='+', required=True, help='CSV files for training')
     parser_model_train.add_argument('--input_test', type=str, nargs='+', required=True, help='CSV files for testing')
+    parser_model_train.add_argument('--output', type=str, default="combined_report.pdf", help='Output path for the report')
 
     args = parser.parse_args()
     if args.command == 'subsample':
@@ -82,7 +87,9 @@ def main():
     elif args.command == 'kmer':
         process_kmer_profiles(args.input, args.kmer_size, args.max_subseqs, args.subsequence_size, args.random_mode, args.label)
     elif args.command == 'train_model':
-        process_model_training(args.input_train, args.input_test)
+        process_model_training(args.input_train, args.input_test, args.output)
+    elif args.command == 'kmer-harmonize':
+        harmonize_kmer_headers(*args.files)
     elif args.command == 'genome_download':
         reformat_and_download_genome_ids(args.input)
     else:
