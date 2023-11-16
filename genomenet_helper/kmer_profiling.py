@@ -5,25 +5,6 @@ import pandas as pd
 import tempfile
 import random
 import logging
-import pandas as pd
-
-logging.basicConfig(level=logging.INFO)
-
-def harmonize_kmer_headers(file1, file2):
-    # Load the CSV files
-    df1 = pd.read_csv(file1)
-    df2 = pd.read_csv(file2)
-
-    # Get the union of k-mer columns from both files
-    kmer_cols = sorted(set(df1.columns) | set(df2.columns))
-
-    # Rearrange and fill missing k-mers with 0s
-    df1 = df1.reindex(columns=['unique_id', 'file_name', 'sample_id', 'class'] + kmer_cols, fill_value=0)
-    df2 = df2.reindex(columns=['unique_id', 'file_name', 'sample_id', 'class'] + kmer_cols, fill_value=0)
-
-    # Save the harmonized files
-    df1.to_csv(file1.replace('.csv', '_harmonized.csv'), index=False)
-    df2.to_csv(file2.replace('.csv', '_harmonized.csv'), index=False)
 
 def process_fasta(fasta_path, max_subseqs=20, kmer_size=7, subsequence_size=2000, temp_dir="", random_mode=False):
     output_files = []
@@ -92,6 +73,7 @@ def aggregate_jellyfish_output(fasta_path, output_files, class_):
 
 def process_kmer_profiles(input_dir, kmer_size, max_subseqs, subsequence_size, random_mode, label=""):
     all_aggregated_data = []
+    individual_files_to_delete = []
     fasta_files = [os.path.join(input_dir, f) for f in os.listdir(input_dir) if f.endswith('.fasta')]
     
     for fasta_file in fasta_files:
@@ -99,6 +81,7 @@ def process_kmer_profiles(input_dir, kmer_size, max_subseqs, subsequence_size, r
             output_files = process_fasta(fasta_file, max_subseqs, kmer_size, subsequence_size, temp_dir, random_mode)
             aggregate_jellyfish_output(fasta_file, output_files, label)
             result_file = f"{os.path.splitext(os.path.basename(fasta_file))[0]}_aggregated_jellyfish_output.csv"
+            individual_files_to_delete.append(result_file)
             all_aggregated_data.append(pd.read_csv(result_file))
 
     if all_aggregated_data:
@@ -106,3 +89,8 @@ def process_kmer_profiles(input_dir, kmer_size, max_subseqs, subsequence_size, r
         output_file_path = f"{os.path.basename(input_dir)}_all_aggregated_jellyfish_output.csv"
         combined_df.to_csv(output_file_path, index=False)
         logging.info(f"K-mer profiling completed. Output file saved as: {output_file_path}")
+
+        # Delete individual files
+        for file_path in individual_files_to_delete:
+            if os.path.exists(file_path):
+                os.remove(file_path)
